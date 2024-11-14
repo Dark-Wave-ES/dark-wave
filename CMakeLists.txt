@@ -1,25 +1,29 @@
 cmake_minimum_required(VERSION 3.21)
-project(my_application LANGUAGES CXX)
+project(file-encryption-system LANGUAGES C CXX)
 
-find_package(Slint QUIET)
-if (NOT Slint_FOUND)
-  message("Slint could not be located in the CMake module search path. Downloading it from Git and building it locally")
-  include(FetchContent)
-  FetchContent_Declare(
-    Slint
-    GIT_REPOSITORY https://github.com/slint-ui/slint.git
-    # `release/1` will auto-upgrade to the latest Slint >= 1.0.0 and < 2.0.0
-    # `release/1.0` will auto-upgrade to the latest Slint >= 1.0.0 and < 1.1.0
-    GIT_TAG release/1
-    SOURCE_SUBDIR api/cpp
-  )
-  FetchContent_MakeAvailable(Slint)
-endif (NOT Slint_FOUND)
+include(FetchContent)
 
-add_executable(my_application src/main.cpp)
-target_link_libraries(my_application PRIVATE Slint::Slint)
-slint_target_sources(my_application ui/app-window.slint)
-# On Windows, copy the Slint DLL next to the application binary so that it's found.
-if (WIN32)
-    add_custom_command(TARGET my_application POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:my_application> $<TARGET_FILE_DIR:my_application> COMMAND_EXPAND_LISTS)
-endif()
+FetchContent_Declare(
+      Poco
+      GIT_REPOSITORY https://github.com/pocoproject/poco.git
+      GIT_TAG poco-1.13.4
+      FIND_PACKAGE_ARGS NAMES Poco
+)
+
+FetchContent_Declare(
+      Slint
+      GIT_REPOSITORY https://github.com/slint-ui/slint.git
+      GIT_TAG release/1.8
+      SOURCE_SUBDIR api/cpp
+      FIND_PACKAGE_ARGS NAMES Slint
+)
+
+FetchContent_MakeAvailable(Poco Slint)
+
+set(PROJECT_SOURCES
+        src/main.cpp
+)
+
+add_executable(${PROJECT_NAME} ${PROJECT_SOURCES})
+target_link_libraries(${PROJECT_NAME} PRIVATE Poco::Crypto Slint::Slint)
+slint_target_sources(${PROJECT_NAME} ui/app-window.slint)
