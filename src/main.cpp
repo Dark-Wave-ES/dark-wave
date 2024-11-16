@@ -14,10 +14,6 @@ int main(int argc, char** argv) {
         ui->set_directory(pick_directory());
     });
 
-    ui->on_check_passphrase([&](const slint::SharedString& passphrase){
-        ui->set_strong_passphrase(isPassphraseStrong(std::string(passphrase)));
-    });
-
     ui->run();
     return 0;
 }
