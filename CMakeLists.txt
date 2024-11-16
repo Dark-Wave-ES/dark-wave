@@ -46,6 +46,7 @@ set(PROJECT_HEADERS
         src/config.h
         src/crypto/symmetric-encryption.h
         src/services/encryption/symmetric-encryption-service.h
+        src/utils/pickers/pickers.h
         src/utils/salt-generator/salt-generator.h
         src/utils/base64/base64.h
         src/crypto/kdf/kdf.h
@@ -54,6 +55,7 @@ set(PROJECT_HEADERS
 
 set(PROJECT_SOURCES
         src/services/encryption/symmetric-encryption-service.cpp
+        src/utils/pickers/pickers.cpp
         src/utils/salt-generator/salt-generator.cpp
         src/utils/base64/base64.cpp
         src/crypto/kdf/kdf.cpp
@@ -90,6 +92,7 @@ set(INCLUDE_DIRECTORIES
         src/crypto/aes/aes-gcm
         src/services/encryption
         src/utils
+        src/utils/pickers
         src/utils/base64
         src/utils/salt-generator
 )
