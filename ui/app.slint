@@ -6,6 +6,37 @@ export enum AESMode {
     Decryption
 }
 
+export component PasswordChecker {
+    in-out property<string> passphrase: "";
+    in-out property<bool> is-strong: false;
+    callback validate(string);
+
+    HorizontalLayout {
+        spacing: 10px;
+
+        LineEdit {
+            width: 70%;
+            text: passphrase;
+            changed text => {
+                root.passphrase = self.text;
+                root.validate(self.text);
+            }
+        }
+
+        Text {
+            text: is-strong ? "Strong passphrase" : "Weak passphrase";
+            color: is-strong ? green : red;
+            vertical-alignment: center;
+            horizontal-alignment: center;
+
+            animate color {
+                duration: 500ms;
+                easing: ease-in-out;
+            }
+        }
+    }
+}
+
 export component App inherits Window {
     default-font-size: 20px;
     title: "File encryption system";
@@ -20,7 +51,7 @@ export component App inherits Window {
 
     callback enter-passphrase(string);
     enter-passphrase(passphrase) => {
-        passphrase-input.text = passphrase;
+        password-checker.passphrase = passphrase;
     }
 
     callback confirm-applying;
@@ -46,14 +77,14 @@ export component App inherits Window {
     Rectangle {
 
         Button {
-                visible: files.length == 0;
-                text: "Pick files";
-                x: (parent.width - self.width) * 0.5;
-                y: (parent.height - self.height) * 0.5;
-                clicked => {
-                    root.pick-files();
-                }
+            visible: files.length == 0;
+            text: "Pick files";
+            x: (parent.width - self.width) * 0.5;
+            y: (parent.height - self.height) * 0.5;
+            clicked => {
+                root.pick-files();
             }
+        }
 
         Button {
             visible: files.length != 0 && mode == AESMode.Undefined && directory == "";
@@ -79,26 +110,16 @@ export component App inherits Window {
             }
         }
 
-        passphrase-input := LineEdit {
+        password-checker := PasswordChecker {
             visible: files.length != 0 && mode != AESMode.Undefined;
-            width: 30%;
+            width: parent.width * 0.5;
+            height: 40px;
             x: (parent.width - self.width) * 0.5;
             y: (parent.height - self.height) * 0.35;
-            changed text => {
-                root.check-passphrase(self.text);
-            }
-        }
-
-        password-checker := Text {
-            visible: files.length != 0 && mode != AESMode.Undefined;
-            x: passphrase-input.x + passphrase-input.width * 1.2;
-            y: passphrase-input.y;
-            text: strong-passphrase ? "Strong passphrase" : "Weak passphrase";
-            color: strong-passphrase ? green : red;
-
-            animate color {
-                duration: 500ms;
-                easing: ease-in-out;
+            passphrase: "";
+            is-strong <=> root.strong-passphrase;
+            validate(passphrase) => {
+                root.check-passphrase(passphrase);
             }
         }
 
@@ -126,17 +147,17 @@ export component App inherits Window {
                     self.text = "Decrypting files...";
                 }
 
-                root.apply-cipher(root.files, passphrase-input.text, root.directory, root.mode);
+                root.apply-cipher(root.files, password-checker.passphrase, root.directory, root.mode);
 
                 progress.visible = true;
 
                 if (root.mode == AESMode.Encryption) {
-                     self.text = "File encryption has been done!";
+                    self.text = "File encryption has been done!";
                 } else if (root.mode == AESMode.Decryption) {
                     self.text = "File decryption has been done!";
                 }
 
-                passphrase-input.text = "";
+                password-checker.passphrase = "";
                 root.mode = AESMode.Undefined;
                 root.strong-passphrase = false;
                 progress.visible = false;
