@@ -147,3 +147,6 @@ target_link_libraries(integration_tests PRIVATE gtest_main gtest gmock Poco::Cry
 target_include_directories(${PROJECT_NAME} PRIVATE ${INCLUDE_DIRECTORIES})
 target_include_directories(unit_tests PRIVATE ${INCLUDE_DIRECTORIES})
 target_include_directories(integration_tests PRIVATE ${INCLUDE_DIRECTORIES})
+
+add_test(NAME UnitTests COMMAND unit_tests)
+add_test(NAME IntegrationTests COMMAND integration_tests)
