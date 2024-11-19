@@ -1,0 +1,59 @@
+name: Build and test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install build tools
+        run: sudo apt-get update && sudo apt-get install -y build-essential cmake
+
+      - name: Configure CMake project
+        run: mkdir build && cmake -S . -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DSLINT_STYLE=material -B build
+
+      - name: Build with CMake
+        run: cmake --build build -j ${nproc}
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifact
+          path: build
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up test environment
+        run: sudo apt-get update && sudo apt-get install xvfb -y x11-common libx11-dev xserver-xorg xserver-xorg-core libfontconfig1-dev libfreetype-dev libxext-dev libxcb1-dev libxcb-render-util0-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxi-dev libxkbcommon-dev libxkbcommon-x11-dev
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifact
+          path: build
+
+      - name: Set executable permissions
+        run: chmod +x build/bin/unit_tests build/bin/integration_tests
+
+      - name: Run tests
+        working-directory: build
+        run: |
+          Xvfb :99 -screen 0 1024x768x24 &
+          export DISPLAY=:99
+          ctest --output-on-failure
