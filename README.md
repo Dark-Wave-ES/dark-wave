@@ -1,58 +1,106 @@
-# Slint C++ Template
+# 🔐 File encryption system 🔐
 
-A template for a C++ application that's using [Slint](https://slint.dev) for the user interface and CMake for the build system.
+![MIT License](https://img.shields.io/badge/License-MIT-green.svg)
 
-## About
+## 🛡️ Project overview
 
-This template helps you get started developing a C++ application with Slint as toolkit
-for the user interface. It demonstrates the integration between the `.slint` UI markup and
-C++ code, how to trigger react to callbacks, get and set properties and use basic widgets.
+The project consists of a C++ application designed to provide file encryption and decryption functionality using the AES-256 algorithm.
+It features a graphical interface built with the Slint framework.
 
-## Prerequisites
+## 🛠 Tech stack
 
-In order to use this template and build a C++ application, you need to install a few tools:
+- **Programming languages**: C++ and Slint.
+- **GUI framework**: Slint.
+- **Build system**: CMake.
+- **Testing framework**: GoogleTest.
 
-  * **[cmake](https://cmake.org/download/)** (3.21 or newer)
-  * A C++ compiler that supports C++ 20 
+## 💻 Minimal and optimal system requirements
 
-If your target environment is Linux or Windows on an x86-64 architecture, then you may also opt into downloading one of our binary Slint packages. These are pre-compiled and require no further tools. You can find setup instructions and download links at
+### Minimal system requirements
 
-<https://slint.dev/docs/cpp/cmake.html#install-binary-packages>
+- **Operating system**: Ubuntu 18.04 (LTS) or newer
+- **Architecture**: amd64
+- **Processor**: 64-bit, 1GHz or faster
+- **Memory**: 512 MB RAM
+- **Storage**: 500 MB available space
+- **Dependency**: OpenSSL 1.1.1 or newer
 
-Alternatively, this template will automatically download the Slint sources and compile them. This option requires you to install Rust by following the [Rust Getting Started Guide](https://www.rust-lang.org/learn/get-started). Once this is done, you should have the ```rustc``` compiler and the ```cargo``` build system installed in your path.
+### Optimal system requirements
 
-## Usage
+- **Operating system**: Ubuntu 22.04 (LTS) or newer
+- **Architecture**: amd64
+- **Processor**: dual-core 2 GHz or faster
+- **Memory**: 1 GB RAM
+- **Storage**: 1 GB available space
+- **Dependency**: latest stable version of OpenSSL available for the OS
 
-1. Download and extract the [ZIP archive of this repository](https://github.com/slint-ui/slint-cpp-template/archive/refs/heads/main.zip).
-2. Rename the extracted directory and change into it:
-    ```
-    mv slint-cpp-template-main my-project
-    cd my-project
-    ```
-3. Configure with CMake
-   ```
-   mkdir build
-   cmake -B build
-   ```
-4. Build with CMake
-   ```
-   cmake --build build
-   ```
-5. Run the application binary
-    * Linux/macOS:
-        ```
-        ./build/my_application
-        ```
-    * Windows:
-        ```
-        build\my_application.exe
-        ```
+## ⚙️ Build from source
 
-We recommend using an IDE for development, along with our [LSP-based IDE integration for `.slint` files](https://github.com/slint-ui/slint/blob/master/tools/lsp/README.md). You can also load this project directly in [Visual Studio Code](https://code.visualstudio.com) and install our [Slint extension](https://marketplace.visualstudio.com/items?itemName=Slint.slint).
+### 🔧 Prerequisites
 
-## Next Steps
+Ensure you have the following installed on your system:
 
-We hope that this template helps you get started and you enjoy exploring making user interfaces with Slint. To learn more
-about the Slint APIs and the `.slint` markup language check out our [online documentation](https://slint.dev/docs/cpp/).
+- build tools (`sudo apt install build-essential`)
+- CMake (`sudo apt install cmake`)
+- Git (`sudo apt install git`)
 
-Don't forget to edit this README to replace it by yours
+### Step 1: Clone the repository
+
+Clone the project from GitHub:
+
+```bash
+git clone https://github.com/Braun-Alex/file-encryption-system.git
+cd file-encryption-system # /file-encryption-system
+```
+
+### Step 2: Build the project
+
+```bash
+mkdir build
+cmake -S . -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF -DSLINT_STYLE=material -B build
+cmake --build build
+```
+
+### Step 3: Run the tests
+
+```bash
+cd build # /file-encryption-system/build
+ctest --output-on-failure
+```
+
+### Step 4: Run the application
+
+```bash
+cd bin # /file-encryption-system/build/bin
+./file-encryption-system
+```
+
+## 📌 Screenshots
+
+![](./docs/1.png)
+![](./docs/2.png)
+![](./docs/3.png)
+![](./docs/4.png)
+![](./docs/5.png)
+![](./docs/6.png)
+![](./docs/7.png)
+![](./docs/8.png)
+![](./docs/9.png)
+![](./docs/10.png)
+![](./docs/11.png)
+![](./docs/12.png)
+![](./docs/13.png)
+![](./docs/14.png)
+![](./docs/15.png)
+![](./docs/16.png)
+
+## ⚠️ Important notes
+
+- Ensure that the 🔑 AES encryption keys 🔑 are kept secure and private. Never keep them together with encrypted files, as this can lead to data
+  compromise.
+- When encrypting files, verify that the 🔗 selected file paths 🔗 are correct to avoid accidental data loss.
+- Regularly create backups of important data to prevent loss in case of 🕵️‍♂️ failures or attacks 🕵️‍♂️.
+
+## 📜 License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 📝 for details.
