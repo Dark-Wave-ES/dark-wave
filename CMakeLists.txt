@@ -150,3 +150,5 @@ target_include_directories(integration_tests PRIVATE ${INCLUDE_DIRECTORIES})
 
 add_test(NAME UnitTests COMMAND unit_tests)
 add_test(NAME IntegrationTests COMMAND integration_tests)
+
+include(${CMAKE_SOURCE_DIR}/CPackConfig.cmake)
